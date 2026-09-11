@@ -1,0 +1,1 @@
+web: PYTHONPATH=backend python3 backend/run_all.py

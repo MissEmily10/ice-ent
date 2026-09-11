@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -p tsconfig.app.json && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "start": "PYTHONPATH=backend python3 backend/run_all.py"
   },
   "dependencies": {
     "@vitejs/plugin-react": "latest",
