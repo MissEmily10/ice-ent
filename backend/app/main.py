@@ -37,6 +37,11 @@ app.add_middleware(
 )
 
 
+@app.get("/health")
+async def health() -> dict[str, str]:
+    return {"status": "ok"}
+
+
 async def db() -> AsyncSession:
     async with Session() as session:
         yield session

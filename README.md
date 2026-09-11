@@ -33,6 +33,14 @@ source .venv/bin/activate
 PYTHONPATH=backend python backend/run_bot.py
 ```
 
+Если хостинг поддерживает публичный web-порт, можно запускать бота и API одним процессом:
+
+```bash
+PYTHONPATH=backend python backend/run_all.py
+```
+
+В панели хостинга укажи startup command выше и порт `8000` либо переменную `PORT`, которую выдаёт хостинг. Проверка API: `/health`.
+
 В отдельном терминале:
 
 ```bash
