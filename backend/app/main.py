@@ -21,7 +21,8 @@ DATABASE_URL = os.getenv("DATABASE_URL", "postgresql+asyncpg://ice:ice@localhost
 
 def normalize_database_url(url: str) -> str:
     """Remove Supabase pooler flags that asyncpg does not accept as keywords."""
-    url = re.sub(r"@\[([A-Za-z0-9.-]+)\](:\d+)?/", r"@\1\2/", url)
+    # Supabase can return a DNS hostname in brackets; Python 3.14 treats that syntax as IPv6.
+    url = re.sub(r"\[([A-Za-z0-9.-]+)\]", r"\1", url)
     parts = urlsplit(url)
     query = [(key, value) for key, value in parse_qsl(parts.query, keep_blank_values=True) if key != "pgbouncer"]
     return urlunsplit((parts.scheme, parts.netloc, parts.path, urlencode(query), parts.fragment))
