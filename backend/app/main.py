@@ -1,14 +1,20 @@
 from contextlib import asynccontextmanager
+import os
+from pathlib import Path
 from uuid import UUID
 
 from fastapi import Depends, FastAPI, Header, HTTPException, Query
+from fastapi.middleware.cors import CORSMiddleware
+from dotenv import load_dotenv
 from pydantic import BaseModel, Field
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 
 from .models import Application, ApplicationAnswer, ApplicationStatus, Base, FormField, Group, Position, User
 
-DATABASE_URL = "postgresql+asyncpg://ice:ice@localhost:5432/ice_bot"
+load_dotenv(Path(__file__).resolve().parents[2] / ".env")
+
+DATABASE_URL = os.getenv("DATABASE_URL", "postgresql+asyncpg://ice:ice@localhost:5432/ice_bot")
 engine = create_async_engine(DATABASE_URL, echo=False)
 Session = async_sessionmaker(engine, expire_on_commit=False)
 
@@ -22,6 +28,13 @@ async def lifespan(_: FastAPI):
 
 
 app = FastAPI(title="ICE Community API", version="0.1.0", lifespan=lifespan)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[origin.strip() for origin in os.getenv("CORS_ORIGINS", "*").split(",") if origin.strip()],
+    allow_credentials=False,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 async def db() -> AsyncSession:

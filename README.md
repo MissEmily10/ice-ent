@@ -24,6 +24,8 @@ uvicorn backend.app.main:app --reload
 
 В `.env` вставь токен, который выдал `@BotFather`, в переменную `BOT_TOKEN`. Сам файл `.env` игнорируется git.
 
+Для отдельного frontend-хостинга задай `CORS_ORIGINS` равным адресу Mini App, а `DATABASE_URL` — строке подключения к PostgreSQL на хостинге.
+
 Запуск бота в отдельном терминале из корня проекта:
 
 ```bash
